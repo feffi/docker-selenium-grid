@@ -1,0 +1,41 @@
+version: '2'
+services:
+  node-chrome:
+    image: feffi/node-chrome
+    environment:
+      shm_size: 1G
+    stdin_open: true
+    volumes:
+    - /dev/shm:/dev/shm
+    tty: true
+    links:
+    - hub
+    labels:
+      io.rancher.container.pull_image: always
+  node-chrome-clustered:
+    image: feffi/node-chrome
+    environment:
+      shm_size: 1G
+    stdin_open: true
+    volumes:
+    - /dev/shm:/dev/shm
+    tty: true
+    links:
+    - hub
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.global: 'true'
+  hub:
+    image: feffi/hub
+    environment:
+      GRID_BROWSER_TIMEOUT: '0'
+      GRID_CLEAN_UP_CYCLE: '5000'
+      GRID_JETTY_MAX_THREADS: '-1'
+      GRID_MAX_SESSION: '5'
+      GRID_NEW_SESSION_WAIT_TIMEOUT: '-1'
+      GRID_NODE_POLLING: '5000'
+      GRID_TIMEOUT: '30000'
+      GRID_UNREGISTER_IF_STILL_DOWN_AFTER: '30000'
+      SE_OPTS: -browserSideLog -ensureCleanSession -timeout=60 -browserTimeout=60
+    stdin_open: true
+    tty: true
